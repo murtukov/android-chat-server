@@ -1,7 +1,12 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: argon2i
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: null }
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -14,9 +19,9 @@ security:
             stateless: true
             anonymous: true
             json_login:
-                check_path:               /api/login_check
-                success_handler:          lexik_jwt_authentication.handler.authentication_success
-                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                check_path:       /api/login_check
+                success_handler:  lexik_jwt_authentication.handler.authentication_success
+                failure_handler:  lexik_jwt_authentication.handler.authentication_failure
 
         api:
             pattern:   ^/api

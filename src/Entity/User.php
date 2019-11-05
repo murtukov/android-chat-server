@@ -3,14 +3,74 @@
 namespace App\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class User
+ * @package App\Entity
+ * @ORM\Entity()
+ */
 class User implements UserInterface
 {
+    /**
+     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="smallint")
+     */
+    private $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=32)
+     * @Assert\Length(min="6", max="32")
+     */
     private $username;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=64)
+     * @Assert\Email()
+     */
     private $email;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
     private $password;
+
+    /**
+     * @var string
+     * @Assert\Length(min="8", max="64")
+     */
     private $passwordPlain;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min="4", max="48")
+     */
     private $country;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return User
+     */
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * Returns the roles granted to the user.
@@ -41,7 +101,17 @@ class User implements UserInterface
      */
     public function getPassword()
     {
-        // TODO: Implement getPassword() method.
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return User
+     */
+    public function setPassword(string $password): User
+    {
+        $this->password = $password;
+        return $this;
     }
 
     /**
@@ -53,7 +123,7 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return null;
     }
 
     /**
@@ -63,7 +133,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->username;
     }
 
     /**
@@ -141,5 +211,12 @@ class User implements UserInterface
         return $this;
     }
 
-
+    public function toArray(): array
+    {
+        return [
+            'username' => $this->username,
+            'email' => $this->email,
+            'country' => $this->country
+        ];
+    }
 }
